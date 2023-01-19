@@ -32,7 +32,7 @@ public class AuthenticationService {
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    public ResponseEntity<LoginResponse> authenticateUser(String authorization, LoginRequest loginRequest) throws Exception {
+    public LoginResponse authenticateUser(String authorization, LoginRequest loginRequest) {
         // TODO: Get the username and password by decoding the Base64 credential inside
         // the Basic Authentication
         // TODO: find if there is any user exists in the database based on the credential,
@@ -40,12 +40,8 @@ public class AuthenticationService {
         String pair=new String(Base64.decodeBase64(authorization.substring(6)));
         String username=pair.split(":")[0];
         String password=pair.split(":")[1];
-        System.out.println(username);
-        System.out.println(password);
 
         CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
-        System.out.println(customUserDetails.getUsername());
-        System.out.println(customUserDetails.getPassword());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         authenticationManager.authenticate(authenticationToken);
 
@@ -54,6 +50,6 @@ public class AuthenticationService {
                 .userType(customUserDetails.getUserType())
                 .build();
 
-        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        return loginResponse;
     }
 }

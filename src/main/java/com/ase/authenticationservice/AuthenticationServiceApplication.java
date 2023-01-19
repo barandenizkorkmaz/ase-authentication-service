@@ -33,7 +33,9 @@ public class AuthenticationServiceApplication implements CommandLineRunner{
 		// Only create test users when there is no user in DB
 		if (userRepository.findAll().size() == 0) {
 			// TODO: Create test users with hashed Bcrypt password and role
-			userRepository.save(new User("admin", "admin@tum.de", bCryptPasswordEncoder.encode("admin"), UserType.DISPATCHER));
+			userRepository.save(new User("dispatcher", "dispatcher@tum.de", bCryptPasswordEncoder.encode("dispatcher"), UserType.DISPATCHER));
+			userRepository.save(new User("deliverer", "deliverer@tum.de", bCryptPasswordEncoder.encode("deliverer"), UserType.DELIVERER));
+			userRepository.save(new User("customer", "customer@tum.de", bCryptPasswordEncoder.encode("customer"), UserType.CUSTOMER));
 		}
 	}
 }
