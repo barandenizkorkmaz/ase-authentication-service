@@ -17,12 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@RequiredArgsConstructor
 public class UserController {
 
-    private final AuthenticationService authenticationService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
-    private final IUserService userService;
+    @Autowired
+    private IUserService userService;
 
     @PostMapping("/login")
     //@PreAuthorize("hasAuthority('DISPATCHER') or hasAuthority('DELIVERER')")
@@ -48,10 +49,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UserRequest updateRequest){
-        userService.updateUser(updateRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<HttpStatus> updateUser(@PathVariable("id") String id, @Valid @RequestBody UserRequest updateRequest){
+        try{
+            userService.updateUser(id, updateRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

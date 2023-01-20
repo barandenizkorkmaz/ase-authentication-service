@@ -6,6 +6,8 @@ import com.ase.authenticationservice.data.request.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,17 +26,25 @@ public class UserService implements IUserService{
     private PasswordEncoder bcryptPasswordEncoder;
 
     @Override
-    public UserDto createUser(UserRequest registerRequest) {
+    public void createUser(UserRequest registerRequest) {
         User user = USER_MAPPER.createUser(registerRequest);
         user.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
-        return USER_MAPPER.convertToUserDto(userEntityService.createUser(user));
+        userEntityService.createUser(user);
     }
 
     @Override
-    public UserDto updateUser(UserRequest updateRequest){
-        User user = USER_MAPPER.createUser(updateRequest);
-        user.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
-        return USER_MAPPER.convertToUserDto(userEntityService.updateUser(user));
+    public void updateUser(String id, UserRequest updateRequest){
+        boolean isValid = userEntityService.isUpdateUserValid(
+                id,
+                updateRequest.getEmail() // New requested email
+        );
+        if(isValid){
+            User user = userEntityService.getUserById(id);
+            USER_MAPPER.updateUser(user, updateRequest);
+            user.setPassword(bcryptPasswordEncoder.encode(updateRequest.getPassword()));
+            userEntityService.updateUser(user);
+        }
+        else throw new IllegalArgumentException();;
     }
 
     @Override

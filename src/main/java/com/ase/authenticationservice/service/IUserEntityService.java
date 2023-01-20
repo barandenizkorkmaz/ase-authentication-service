@@ -12,5 +12,5 @@ public interface IUserEntityService {
     List<User> getUsers();
     void deleteUserById(String userId);
     User getUserById(String id);
-
+    boolean isUpdateUserValid(String id, String email);
 }

@@ -6,8 +6,8 @@ import com.ase.authenticationservice.data.request.UserRequest;
 import java.util.List;
 
 public interface IUserService {
-    UserDto createUser(UserRequest registerRequest);
-    UserDto updateUser(UserRequest updateRequest);
+    void createUser(UserRequest registerRequest);
+    void updateUser(String id, UserRequest updateRequest);
     List<UserDto> getUsers();
     void deleteUserById(String userId);
 }

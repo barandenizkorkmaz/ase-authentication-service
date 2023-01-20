@@ -2,7 +2,7 @@ package com.ase.authenticationservice.service;
 
 import com.ase.authenticationservice.data.entity.User;
 import com.ase.authenticationservice.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -12,26 +12,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserEntityService implements IUserEntityService{
 
-    private final UserRepository userRepository;
-
-
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User createUser(User user) {
         if(userRepository.findByEmail(user.getEmail()).isPresent()){
-            throw new EntityExistsException("User with email " + user.getEmail() + "already exists");
+            throw new EntityExistsException("User with email " + user.getEmail() + " already exists");
         }
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(User user){
-        if(!userRepository.existsById(user.getId())){
-            throw new UsernameNotFoundException("User not found");
-        }
         return userRepository.save(user);
     }
 
@@ -56,5 +51,11 @@ public class UserEntityService implements IUserEntityService{
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()) return user.get();
         else throw new EntityNotFoundException();
+    }
+
+    @Override
+    public boolean isUpdateUserValid(String id, String newEmail) {
+        // Check if there is any other user with this email.
+        return userRepository.findAllByIdIsNotAndEmail(id, newEmail).size() == 0;
     }
 }
