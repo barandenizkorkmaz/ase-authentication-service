@@ -18,11 +18,10 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    @PreAuthorize("hasAuthority('DISPATCHER') or hasAuthority('DELIVERER')")
+    //@PreAuthorize("hasAuthority('DISPATCHER') or hasAuthority('DELIVERER')")
     // TODO: Implement Authentication of the user credentials
-    public ResponseEntity<LoginResponse> login(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @RequestBody LoginRequest loginRequest){
-        LoginResponse response = authenticationService.authenticateUser(authorization, loginRequest);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
+        return authenticationService.authenticateUser(loginRequest);
     }
 
 }
