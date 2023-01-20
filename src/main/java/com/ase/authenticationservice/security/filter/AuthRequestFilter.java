@@ -31,12 +31,12 @@ public class AuthRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("AuthRequestFilter: doFilterInternal");
+        //System.out.println("AuthRequestFilter: doFilterInternal");
 
         String username = null;
         String jwt = null;
         final String authHeader = request.getHeader(SecurityConstants.AUTHORIZATION);
-        System.out.println("Authenticate Header " + authHeader);
+        //System.out.println("Authenticate Header " + authHeader);
 
         if (authHeader != null && authHeader.startsWith(SecurityConstants.BEARER)) {
             // TODO: Get the JWT in the header.
@@ -69,6 +69,7 @@ public class AuthRequestFilter extends OncePerRequestFilter {
 
             //authService.setAuthentication(userDetails, request);
             Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
+            /*
             System.out.println(String.format("Authenticate Token Set:\n"
                             + "Username: %s\n"
                             + "Password: %s\n"
@@ -76,6 +77,7 @@ public class AuthRequestFilter extends OncePerRequestFilter {
                     authContext.getPrincipal(),
                     authContext.getCredentials(),
                     authContext.getAuthorities().toString()));
+             */
         }
         filterChain.doFilter(request, response);
     }
