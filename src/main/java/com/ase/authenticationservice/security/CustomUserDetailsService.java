@@ -23,7 +23,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         // TODO: return a Spring User with the
         // username, password and authority that we retrieved above
         User user = userEntityService.getUser(username);
-        
+        System.out.println("loadUserByUsername");
+        System.out.println(user.getUserType());
+        CustomUserDetails userDetails = CustomUserDetails.create(user);
+        System.out.println("Authorities:");
+        System.out.println(userDetails.getAuthorities());
         return CustomUserDetails.create(user);
     }
 }

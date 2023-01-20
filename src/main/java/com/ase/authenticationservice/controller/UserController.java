@@ -33,11 +33,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<HttpStatus> register(@Valid @RequestBody UserRequest registerRequest){
-        System.out.println("Registering user");
-        System.out.println("Request Details");
-        System.out.println(registerRequest.getEmail());
-        System.out.println(registerRequest.getPassword());
-        System.out.println(registerRequest.getUserType());
         userService.createUser(registerRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -25,11 +25,7 @@ public class UserService implements IUserService{
 
     @Override
     public UserDto createUser(UserRequest registerRequest) {
-        System.out.println("UserService: createUser");
         User user = USER_MAPPER.createUser(registerRequest);
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
-        System.out.println(user.getUserType());
         user.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
         return USER_MAPPER.convertToUserDto(userEntityService.createUser(user));
     }
