@@ -52,6 +52,13 @@ public class UserService implements IUserService{
         return USER_MAPPER.convertToUserDtoList(userEntityService.getUsers());
     }
 
+    @Override
+    public UserDto getUser(String id) {
+        User user = userEntityService.getUserById(id);
+        return USER_MAPPER.convertToUserDto(user);
+    }
+
+
     public void deleteUserById(String userId) {
         userEntityService.deleteUserById(userId);
     }

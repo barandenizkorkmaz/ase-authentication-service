@@ -42,6 +42,11 @@ public class UserController {
     public ResponseEntity<List<UserDto>> listAll(){
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
+    @GetMapping("/list/{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable("id") String id){
+        return ResponseEntity.ok(userService.getUser(id));
+    }
+
 
     @PostMapping("delete/{id}")
     public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("id") String id) {
