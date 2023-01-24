@@ -25,6 +25,11 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @GetMapping("")
+    public ResponseEntity<HttpStatus> startSession(){
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     //@PreAuthorize("hasAuthority('DISPATCHER') or hasAuthority('DELIVERER')")
     // TODO: Implement Authentication of the user credentials
