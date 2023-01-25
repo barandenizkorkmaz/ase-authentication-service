@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 import static com.ase.authenticationservice.data.mapper.UserMapper.USER_MAPPER;
@@ -34,9 +35,13 @@ public class UserService implements IUserService{
 
     @Override
     public void updateUser(String email, UserRequest updateRequest){
-        User user = userEntityService.getUser(email); // Throws an exception inside if no such email exists.
+        User user = userEntityService.getUser(email);
+        if(!email.equals(updateRequest.getEmail()) && userEntityService.isUserExists(updateRequest.getEmail())){
+            throw new EntityExistsException("User with email " + updateRequest.getEmail() + "already exists");
+        }
         USER_MAPPER.updateUser(user, updateRequest);
         user.setPassword(bcryptPasswordEncoder.encode(updateRequest.getPassword()));
+        userEntityService.deleteUser(email);
         userEntityService.updateUser(user);
     }
 

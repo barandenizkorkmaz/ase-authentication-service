@@ -60,6 +60,13 @@ public class UserController {
 
     @PutMapping("/update/{email}")
     public ResponseEntity<HttpStatus> updateUser(@PathVariable("email") String email, @Valid @RequestBody UserRequest updateRequest){
+        System.out.println("Authentication Controller: Update");
+        System.out.println("The request as been made for the following email:");
+        System.out.println(email);
+        System.out.println("The request has been made with following body:");
+        System.out.println(updateRequest.getEmail());
+        System.out.println(updateRequest.getPassword());
+        System.out.println(updateRequest.getUserType());
         try{
             userService.updateUser(email, updateRequest);
             return new ResponseEntity<>(HttpStatus.OK);

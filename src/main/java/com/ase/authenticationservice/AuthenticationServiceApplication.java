@@ -20,23 +20,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class AuthenticationServiceApplication implements CommandLineRunner {
 
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private UserRepository userRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AuthenticationServiceApplication.class, args);
-	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:3000");
-			}
-		};
 	}
 
 	@Override
@@ -45,4 +35,5 @@ public class AuthenticationServiceApplication implements CommandLineRunner {
 			userRepository.save(new User("admin@tum.de", bCryptPasswordEncoder.encode("admin"), UserType.DISPATCHER));
 		}
 	}
+
 }

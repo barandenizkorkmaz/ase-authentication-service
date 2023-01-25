@@ -46,4 +46,9 @@ public class UserEntityService implements IUserEntityService{
         userRepository.deleteByEmail(email);
     }
 
+    @Override
+    public boolean isUserExists(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.isPresent();
+    }
 }

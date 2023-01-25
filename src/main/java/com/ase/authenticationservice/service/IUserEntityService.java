@@ -11,4 +11,5 @@ public interface IUserEntityService {
     void deleteUser(String email);
     User getUser(String email) throws UsernameNotFoundException;
     List<User> getUsers();
+    boolean isUserExists(String email);
 }
