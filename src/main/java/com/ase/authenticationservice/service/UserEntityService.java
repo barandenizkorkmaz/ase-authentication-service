@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,23 +17,23 @@ public class UserEntityService implements IUserEntityService{
     private UserRepository userRepository;
 
     @Override
-    public User createUser(User user) {
+    public void createUser(User user) {
         if(userRepository.findByEmail(user.getEmail()).isPresent()){
             throw new EntityExistsException("User with email " + user.getEmail() + " already exists");
         }
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override
-    public User updateUser(User user){
-        return userRepository.save(user);
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 
     @Override
     public User getUser(String email) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()) return user.get();
-        else throw new UsernameNotFoundException("User not found.");
+        else throw new UsernameNotFoundException("User with email " + email + " not found");
     }
 
     @Override
@@ -42,20 +41,9 @@ public class UserEntityService implements IUserEntityService{
         return userRepository.findAll();
     }
 
-    public void deleteUserById(String userId) {
-        userRepository.deleteById(userId);
+    @Override
+    public void deleteUser(String email) {
+        userRepository.deleteByEmail(email);
     }
 
-    @Override
-    public User getUserById(String id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()) return user.get();
-        else throw new EntityNotFoundException();
-    }
-
-    @Override
-    public boolean isUpdateUserValid(String id, String newEmail) {
-        // Check if there is any other user with this email.
-        return userRepository.findAllByIdIsNotAndEmail(id, newEmail).size() == 0;
-    }
 }

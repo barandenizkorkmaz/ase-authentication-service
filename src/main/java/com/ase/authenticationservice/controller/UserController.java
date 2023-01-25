@@ -3,7 +3,6 @@ package com.ase.authenticationservice.controller;
 import com.ase.authenticationservice.data.dto.UserDto;
 import com.ase.authenticationservice.data.request.LoginRequest;
 import com.ase.authenticationservice.data.request.UserRequest;
-import com.ase.authenticationservice.data.response.LoginResponse;
 import com.ase.authenticationservice.service.AuthenticationService;
 import com.ase.authenticationservice.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class UserController {
     @PostMapping("/login")
     //@PreAuthorize("hasAuthority('DISPATCHER') or hasAuthority('DELIVERER')")
     // TODO: Implement Authentication of the user credentials
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+    public ResponseEntity<HttpStatus> login(@Valid @RequestBody LoginRequest loginRequest){
         return authenticationService.authenticateUser(loginRequest);
     }
 
@@ -47,22 +46,22 @@ public class UserController {
     public ResponseEntity<List<UserDto>> listAll(){
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
-    @GetMapping("/list/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("id") String id){
-        return ResponseEntity.ok(userService.getUser(id));
+    @GetMapping("/list/{email}")
+    public ResponseEntity<UserDto> getUser(@PathVariable("email") String email){
+        return ResponseEntity.ok(userService.getUser(email));
     }
 
 
-    @PostMapping("delete/{id}")
-    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("id") String id) {
-        userService.deleteUserById(id);
+    @PostMapping("delete/{email}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("email") String email) {
+        userService.deleteUser(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> updateUser(@PathVariable("id") String id, @Valid @RequestBody UserRequest updateRequest){
+    @PutMapping("/update/{email}")
+    public ResponseEntity<HttpStatus> updateUser(@PathVariable("email") String email, @Valid @RequestBody UserRequest updateRequest){
         try{
-            userService.updateUser(id, updateRequest);
+            userService.updateUser(email, updateRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception ex){

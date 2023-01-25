@@ -33,18 +33,11 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void updateUser(String id, UserRequest updateRequest){
-        boolean isValid = userEntityService.isUpdateUserValid(
-                id,
-                updateRequest.getEmail() // New requested email
-        );
-        if(isValid){
-            User user = userEntityService.getUserById(id);
-            USER_MAPPER.updateUser(user, updateRequest);
-            user.setPassword(bcryptPasswordEncoder.encode(updateRequest.getPassword()));
-            userEntityService.updateUser(user);
-        }
-        else throw new IllegalArgumentException();;
+    public void updateUser(String email, UserRequest updateRequest){
+        User user = userEntityService.getUser(email); // Throws an exception inside if no such email exists.
+        USER_MAPPER.updateUser(user, updateRequest);
+        user.setPassword(bcryptPasswordEncoder.encode(updateRequest.getPassword()));
+        userEntityService.updateUser(user);
     }
 
     @Override
@@ -53,14 +46,14 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public UserDto getUser(String id) {
-        User user = userEntityService.getUserById(id);
+    public UserDto getUser(String email) {
+        User user = userEntityService.getUser(email);
         return USER_MAPPER.convertToUserDto(user);
     }
 
-
-    public void deleteUserById(String userId) {
-        userEntityService.deleteUserById(userId);
+    @Override
+    public void deleteUser(String email) {
+        userEntityService.deleteUser(email);
     }
 
 }

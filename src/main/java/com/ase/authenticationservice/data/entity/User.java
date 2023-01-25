@@ -22,8 +22,6 @@ import java.util.UUID;
 @Document("users")
 public class User extends BaseEntity {
     @Id
-    private String id = UUID.randomUUID().toString();
-
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Please enter a valid email")
     private String email;

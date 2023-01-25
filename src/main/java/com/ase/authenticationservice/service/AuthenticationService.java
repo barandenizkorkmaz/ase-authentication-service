@@ -3,7 +3,6 @@ package com.ase.authenticationservice.service;
 import com.ase.authenticationservice.data.entity.User;
 import com.ase.authenticationservice.data.entity.UserType;
 import com.ase.authenticationservice.data.request.LoginRequest;
-import com.ase.authenticationservice.data.response.LoginResponse;
 import com.ase.authenticationservice.security.CustomUserDetails;
 import com.ase.authenticationservice.security.CustomUserDetailsService;
 import com.ase.authenticationservice.security.SecurityConstants;
@@ -41,7 +40,7 @@ public class AuthenticationService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public ResponseEntity<LoginResponse> authenticateUser(LoginRequest loginRequest) {
+    public ResponseEntity<HttpStatus> authenticateUser(LoginRequest loginRequest) {
         // TODO: Get the username and password by decoding the Base64 credential inside
         // the Basic Authentication
         // TODO: find if there is any user exists in the database based on the credential,
@@ -54,14 +53,9 @@ public class AuthenticationService {
 
             final String jwt = jwtUtil.generateToken(customUserDetails);
 
-            LoginResponse loginResponse = LoginResponse.builder()
-                    .id(customUserDetails.getId())
-                    .userType(customUserDetails.getUserType())
-                    .build();
-
             return ResponseEntity.ok()
                     .header(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + jwt)
-                    .body(loginResponse);
+                    .build();
         } else {
             return ResponseEntity.notFound().build();
         }
