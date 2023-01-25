@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.EnumType;
@@ -21,9 +22,7 @@ import java.util.UUID;
 @SuperBuilder
 @Document("users")
 public class User extends BaseEntity {
-    @Id
-    private String id = UUID.randomUUID().toString();
-
+    @Indexed(unique=true)
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Please enter a valid email")
     private String email;
