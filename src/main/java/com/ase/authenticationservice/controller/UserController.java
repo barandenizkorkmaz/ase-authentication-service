@@ -5,7 +5,6 @@ import com.ase.authenticationservice.data.request.LoginRequest;
 import com.ase.authenticationservice.data.request.UserRequest;
 import com.ase.authenticationservice.service.AuthenticationService;
 import com.ase.authenticationservice.service.IUserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +59,6 @@ public class UserController {
 
     @PutMapping("/update/{email}")
     public ResponseEntity<HttpStatus> updateUser(@PathVariable("email") String email, @Valid @RequestBody UserRequest updateRequest){
-        System.out.println("Authentication Controller: Update");
-        System.out.println("The request as been made for the following email:");
-        System.out.println(email);
-        System.out.println("The request has been made with following body:");
-        System.out.println(updateRequest.getEmail());
-        System.out.println(updateRequest.getPassword());
-        System.out.println(updateRequest.getUserType());
         try{
             userService.updateUser(email, updateRequest);
             return new ResponseEntity<>(HttpStatus.OK);
