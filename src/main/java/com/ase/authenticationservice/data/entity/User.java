@@ -22,7 +22,7 @@ import java.util.UUID;
 @SuperBuilder
 @Document("users")
 public class User extends BaseEntity {
-    @Indexed(unique=true)
+
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Please enter a valid email")
     private String email;
