@@ -1,12 +1,14 @@
 package com.ase.authenticationservice.security.jwt;
 
 import com.ase.authenticationservice.security.SecurityConstants;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.*;
 import java.security.cert.Certificate;
 
@@ -22,11 +24,16 @@ public class KeyStoreManager {
 
     public void loadKeyStore() throws KeyStoreException, IOException {
         keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        FileInputStream fis = null;
+        //FileInputStream fis = null;
+        InputStream fis = null;
         try {
             // Get the path to the keystore file in the resources folder
+            /*
             File keystoreFile = ResourceUtils.getFile("classpath:" + SecurityConstants.KEY_FILE);
             fis = new FileInputStream(keystoreFile);
+             */
+            ClassPathResource classPathResource = new ClassPathResource("ase_project.keystore");
+            fis = classPathResource.getInputStream();
             keyStore.load(fis, password);
             keyAlias = keyStore.aliases().nextElement();
         } catch (Exception e) {
