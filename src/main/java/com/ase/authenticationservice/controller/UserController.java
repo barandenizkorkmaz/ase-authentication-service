@@ -3,6 +3,7 @@ package com.ase.authenticationservice.controller;
 import com.ase.authenticationservice.data.dto.UserDto;
 import com.ase.authenticationservice.data.request.LoginRequest;
 import com.ase.authenticationservice.data.request.UserRequest;
+import com.ase.authenticationservice.data.response.GetUserInfoResponse;
 import com.ase.authenticationservice.service.AuthenticationService;
 import com.ase.authenticationservice.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +46,11 @@ public class UserController {
     public ResponseEntity<List<UserDto>> listAll(){
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
-    @GetMapping("/list/{email}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("email") String email){
-        return ResponseEntity.ok(userService.getUser(email));
+    @GetMapping("/info/{email}")
+    public ResponseEntity<GetUserInfoResponse> getUser(@PathVariable("email") String email){
+        UserDto userDto = userService.getUser(email);
+        return ResponseEntity.ok(GetUserInfoResponse.builder().userType(userDto.getUserType()).build());
     }
-
 
     @PostMapping("delete/{email}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("email") String email) {
