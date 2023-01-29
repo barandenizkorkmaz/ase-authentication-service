@@ -11,5 +11,5 @@ public interface IUserService {
     void deleteUser(String email);
     UserDto getUser(String email);
     List<UserDto> getUsers();
-
+    List<String> getEmailsByUserType(String userType);
 }

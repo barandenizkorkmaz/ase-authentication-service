@@ -76,6 +76,11 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public List<String> getEmailsByUserType(String userType) {
+        return userEntityService.getEmailsByUserType(userType);
+    }
+
+    @Override
     public void deleteUser(String email) {
         userEntityService.deleteUser(email);
     }

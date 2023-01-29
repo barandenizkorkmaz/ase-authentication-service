@@ -46,6 +46,17 @@ public class UserController {
     public ResponseEntity<List<UserDto>> listAll(){
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
+
+    @GetMapping("/list/emails/deliverer")
+    public ResponseEntity<List<String>> getEmailsDeliverers(){
+        return new ResponseEntity<>(userService.getEmailsByUserType("DELIVERER"),HttpStatus.OK);
+    }
+
+    @GetMapping("/list/emails/customer")
+    public ResponseEntity<List<String>> getEmailsCustomer(){
+        return new ResponseEntity<>(userService.getEmailsByUserType("CUSTOMER"),HttpStatus.OK);
+    }
+
     @GetMapping("/info/{email}")
     public ResponseEntity<GetUserInfoResponse> getUser(@PathVariable("email") String email){
         UserDto userDto = userService.getUser(email);

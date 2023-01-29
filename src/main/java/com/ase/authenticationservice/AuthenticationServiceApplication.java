@@ -17,23 +17,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableEurekaClient
-public class AuthenticationServiceApplication implements CommandLineRunner {
-
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+public class AuthenticationServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AuthenticationServiceApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		if(userRepository.findAll().size() == 0){
-			userRepository.save(new User("admin@tum.de", bCryptPasswordEncoder.encode("admin"), UserType.DISPATCHER));
-		}
 	}
 
 }

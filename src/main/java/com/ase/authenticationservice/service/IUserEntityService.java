@@ -12,4 +12,6 @@ public interface IUserEntityService {
     User getUser(String email) throws UsernameNotFoundException;
     List<User> getUsers();
     boolean isUserExists(String email);
+
+    List<String> getEmailsByUserType(String userType);
 }

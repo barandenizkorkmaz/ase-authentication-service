@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,5 +51,15 @@ public class UserEntityService implements IUserEntityService{
     public boolean isUserExists(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent();
+    }
+
+    @Override
+    public List<String> getEmailsByUserType(String userType) {
+        List<String> emails = new ArrayList<>();
+        List<User> users = userRepository.findAllByUserType(userType);
+        for(User user: users){
+            emails.add(user.getEmail());
+        }
+        return emails;
     }
 }
